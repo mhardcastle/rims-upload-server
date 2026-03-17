@@ -26,7 +26,7 @@ WSGIPassAuthorization On
 </VirtualHost>
 ```
 
-DocumentRoot should be a path to a location that will contain the downloads directory. Make sure both the DocumentRoot and the WSGIScriptAlias are declared as visible to Apache.
+DocumentRoot should be a path to a location that will contain the downloads directory. Make sure both the DocumentRoot and the WSGIScriptAlias directories are declared as visible to Apache.
 
 ## API
 
@@ -36,6 +36,6 @@ There are two endpoints below the WSGIScriptAlias directory:
 
 * `'/'`: call with POST with `auth` set to a valid token from the keys list and the file as multipart form data with name 'file'. The code returns JSON with the result of the upload. A `'status'` string will always be present in the JSON. If `'status'` is `'success'` then a `'url'` string will give the location of the uploaded file.
 
-* `'/keygen'`: call with POST with `auth` set to token 0 from the keys list, and a new token will be generated and added to the keys list (which must therefore be writable to the WSGI process in production). This allows the root user to generate new tokens for non-route users.
+* `'/keygen'`: call with POST with `auth` set to token 0 from the keys list, and a new token will be generated and added to the keys list (which must therefore be writable to the WSGI process in production). This allows the root user to generate new tokens for non-root users.
 
 
