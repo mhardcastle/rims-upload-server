@@ -38,12 +38,12 @@ def keygen():
         auth=request.form.get('auth')
         if auth is None:
             return {'status':'unauthorized'}
-        if keys[0]!='auth':
+        if keys[0]!=auth:
             return {'status':'unauthorized'}
         key=secrets.token_hex()
         keys.append(key)
-        with open(KEYS,'w') as outfile:
-            outfile.writelines(keys)
+        with open(os.environ['KEYS'],'a') as outfile:
+            outfile.write(key+'\n')
         return {'status':'success','key':key}
     
 if __name__=='__main__':
