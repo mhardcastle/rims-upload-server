@@ -39,3 +39,6 @@ There are two endpoints below the WSGIScriptAlias directory:
 * `'/keygen'`: call with POST with `auth` set to token 0 from the keys list, and a new token will be generated and added to the keys list (which must therefore be writable to the WSGI process in production). This allows the root user to generate new tokens for non-root users.
 
 
+## Example upload code
+
+`test_upload.py` is an example upload script using `requests`.
