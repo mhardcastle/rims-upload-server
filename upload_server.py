@@ -1,10 +1,11 @@
 import os
 from flask import Flask, request
 from uuid import uuid4
+import secrets
 
-UPLOADS='/home/mjh/upload-test'
-DOWNLOAD='https://example.com/downloads/'
-keys=('123456789',)
+UPLOADS=os.environ['UPLOADS']
+DOWNLOAD=os.environ['DOWNLOAD']
+keys=[k.rstrip() for k in open(os.environ['KEYS']).readlines()]
 
 app = Flask(__name__)
 
@@ -30,6 +31,20 @@ def upload_file():
         return {'status':'success','url':DOWNLOAD+filename}
     else:
         return {'status':'bad method'}
+
+@app.route('/keygen', methods=['GET', 'POST'])
+def keygen():
+    if request.method == 'POST':
+        auth=request.form.get('auth')
+        if auth is None:
+            return {'status':'unauthorized'}
+        if keys[0]!='auth':
+            return {'status':'unauthorized'}
+        key=secrets.token_hex()
+        keys.append(key)
+        with open(KEYS,'w') as outfile:
+            outfile.writelines(keys)
+        return {'status':'success','key':key}
     
 if __name__=='__main__':
     app.run(debug=True,host='0.0.0.0')
